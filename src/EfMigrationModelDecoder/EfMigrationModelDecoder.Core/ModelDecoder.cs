@@ -19,7 +19,7 @@ namespace EfMigrationModelDecoder.Core
             _connectionString = connectionString;
         }
 
-        public ModelDecodeResult GetModelMyMigrationNumber(int num)
+        public ModelDecodeResult GetModelByMigrationNumber(int num)
         {
             var migrationsIds = GetMigrationIds();
             if ((num >= 0 && num > migrationsIds.Length - 1)

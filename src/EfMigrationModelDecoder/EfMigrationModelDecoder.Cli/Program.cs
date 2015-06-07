@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using CmdLine;
 using EfMigrationModelDecoder.Core;
 
 namespace EfMigrationModelDecoder.Cli
@@ -11,13 +13,40 @@ namespace EfMigrationModelDecoder.Cli
     {
         static void Main(string[] args)
         {
-            var modelDecoder = new ModelDecoder(@"Data Source=.\SQL2012;Initial Catalog=ModPacVMIAzure;User ID=sa;Password=sasasa;MultipleActiveResultSets=True");
-            //var result = modelDecoder.GetModelByMigrationId("201505261030122_AddImportStatusToProduct");
-            var result = modelDecoder.GetModelMyMigrationNumber(-1);
+            CommandLineArgs cmdArgs;
+            try
+            {
+                cmdArgs = CommandLine.Parse<CommandLineArgs>();
+            }
+            catch (CommandLineException exception)
+            {
+                Console.WriteLine(exception.ArgumentHelp.Message);
+                Console.WriteLine();
+                Console.WriteLine(exception.ArgumentHelp.GetHelpText(Console.BufferWidth));
+                return;
+            }
+
+            var modelDecoder = new ModelDecoder(cmdArgs.ConnectionString);
+
+            int migrationNum;
+            ModelDecodeResult result = int.TryParse(cmdArgs.MigrationId, out migrationNum) 
+                ? modelDecoder.GetModelByMigrationNumber(migrationNum)
+                : modelDecoder.GetModelByMigrationId(cmdArgs.MigrationId);
+            
             if (!string.IsNullOrEmpty(result.ErrorText))
             {
                 Console.WriteLine(result.ErrorText);
             }
+
+            try
+            {
+                result.Edmx.Save(cmdArgs.OutFileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to save EDMX file: "+ ex.Message);
+            }
+            
         }
 
     }
