@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+using System.IO;
 using CmdLine;
 using EfMigrationModelDecoder.Core;
 
@@ -26,12 +22,14 @@ namespace EfMigrationModelDecoder.Cli
                 return;
             }
 
-            var modelDecoder = new ModelDecoder(cmdArgs.ConnectionString);
+            Console.WriteLine();
+            Console.WriteLine("Reading migration...");
 
+            var modelDecoder = new ModelDecoder(cmdArgs.ConnectionString);
             int migrationNum;
-            ModelDecodeResult result = int.TryParse(cmdArgs.MigrationId, out migrationNum) 
+            ModelDecodeResult result = int.TryParse(cmdArgs.Migration, out migrationNum) 
                 ? modelDecoder.GetModelByMigrationNumber(migrationNum)
-                : modelDecoder.GetModelByMigrationId(cmdArgs.MigrationId);
+                : modelDecoder.GetModelByMigrationId(cmdArgs.Migration);
             
             if (!string.IsNullOrEmpty(result.ErrorText))
             {
@@ -40,7 +38,9 @@ namespace EfMigrationModelDecoder.Cli
 
             try
             {
+                Console.WriteLine(string.Concat("Writing EDMX for migrationId \"", result.MigrationId, "\" to \"", Path.GetFullPath(cmdArgs.OutFileName), "\"..."));
                 result.Edmx.Save(cmdArgs.OutFileName);
+                Console.WriteLine("Done.");
             }
             catch (Exception ex)
             {

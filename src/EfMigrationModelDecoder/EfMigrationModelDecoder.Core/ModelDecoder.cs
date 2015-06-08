@@ -37,7 +37,8 @@ namespace EfMigrationModelDecoder.Core
             var model = GetModel(migrationId);
             return new ModelDecodeResult
             {
-                Edmx = Decode(model)
+                Edmx = Decode(model),
+                MigrationId = migrationId,
             };
         }
 
@@ -53,7 +54,8 @@ namespace EfMigrationModelDecoder.Core
             }
             return new ModelDecodeResult
             {
-                Edmx = Decode(model)
+                Edmx = Decode(model),
+                MigrationId = migrationId,
             };
         }
 

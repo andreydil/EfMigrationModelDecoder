@@ -19,8 +19,8 @@ namespace EfMigrationModelDecoder.Cli
         [CommandLineParameter(Command = "outFile", ParameterIndex = 2, Description = "Specifies the output filename.", Default = "Model.edmx")]
         public string OutFileName { get; set; }
 
-        [CommandLineParameter(Command = "migrationId", ParameterIndex = 3, Description = "Specifies migrationId or migration number (supports negative values to count from the end).", Default = "-1")]
-        public string MigrationId { get; set; }
+        [CommandLineParameter(Command = "migration", ParameterIndex = 3, Description = "Specifies migrationId or migration number (supports negative values to count from the end).", Default = "-1")]
+        public string Migration { get; set; }
 
 
     } 

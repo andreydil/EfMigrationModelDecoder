@@ -11,5 +11,6 @@ namespace EfMigrationModelDecoder.Core
     {
         public XDocument Edmx { get; set; }
         public string ErrorText { get; set; }
+        public string MigrationId { get; set; }
     }
 }
