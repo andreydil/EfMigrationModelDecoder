@@ -9,6 +9,7 @@ It maybe useful to see what model is stored in the database to debug some diffic
 #####You must specify connection string to your MSSQL database.  
 #####Migrations can be specified either by ID or by number. Numbers are zero-based. Negative values are supported to count from the end. 
 For example:
+* **/migration:AddUsersTable**  - for the migration with id 'AddUsersTable'
 * **/migration:0**  - for the first migration
 * **/migration:7**  - for migration #7 (zero-based)
 * **/migration:-1**  - for the last migration
